@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,7 +8,34 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./css/styles.css" />
   <title>To-do-manager</title>
+  <script>
+    function updateTodo(id) {
+      fetch(`/todos/${id}/markAsCompleted`, {
+        method: "put",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((res) => {
+          if (res.ok) {
+            window.location.reload();
+          }
+        })
+        .catch((err) => console.error(err));
+    }
+    function deleteTodo(id) {
+      fetch(`/todos/${id}`, {
+        method: "delete",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((res) => {
+          if (res.ok) {
+            window.location.reload();
+          }
+        })
+        .catch((err) => console.error(err));
+    }
+  </script>
 </head>
+
 <body>
   <div class="grid grid-cols-6">
     <div class="col-start-3 col-span-2">
@@ -28,11 +56,12 @@
           </div>
         </form>
         <div>
-          <%- include('todo.ejs', {title: "Overdue", data: overdue}) %>
-          <%- include('todo.ejs', {title: "Due Today", data: dueToday}) %>
-          <%- include('todo.ejs', {title: "DueLater", data: dueLater}) %>
+          <%- include('todo.ejs', {title: "Overdue" , data: overdue}) %>
+            <%- include('todo.ejs', {title: "Due Today" , data: dueToday}) %>
+              <%- include('todo.ejs', {title: "DueLater" , data: dueLater}) %>
         </div>
     </div>
   </div>
 </body>
+
 </html>

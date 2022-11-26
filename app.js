@@ -14,19 +14,23 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", async (request, response) => {
-  const completedItems = await Todo.completedItems();
-  const allTodos = await Todo.getTodos();
   const overdue = await Todo.overdue();
   const dueToday = await Todo.dueToday();
   const dueLater = await Todo.dueLater();
-  response.render("index", {
-    title: "Todo application",
-    completedItems,
-    overdue,
-    dueToday,
-    dueLater,
-    allTodos,
-  });
+  if (request.accepts("html")) {
+    response.render("index", {
+      title: "Todo application",
+      overdue,
+      dueToday,
+      dueLater,
+    });
+  } else {
+    response.json({
+      overdue,
+      dueToday,
+      dueLater,
+    });
+  }
 });
 
 app.get("/todos", async function (request, response) {
@@ -78,18 +82,13 @@ app.put("/todos/:id/markAsCompleted", async function (request, response) {
   }
 });
 
-app.delete("/todos/:id", async function (request, response) {
-  console.log("We have to delete a Todo with ID: ", request.params.id);
-  // FILL IN YOUR CODE HERE
-  const deleteTodo = await Todo.destroy({
-    where: {
-      id: request.params.id,
-    },
-  });
-  // eslint-disable-next-line no-unneeded-ternary
-  response.send(deleteTodo ? true : false);
-
-  // First, we have to query our database to delete a Todo by ID.
-  // Then, we have to respond back with true/false based on whether the Todo was deleted or not.
+app.delete("/todos/:id", async (request, response) => {
+  console.log("delete a Todo with ID: ", request.params.id);
+  try {
+    await Todo.remove(request.params.id);
+    return response.json({ success: true });
+  } catch (error) {
+    return response.status(422).json(error);
+  }
 });
 module.exports = app;
