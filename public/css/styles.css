@@ -1,0 +1,6 @@
+body {
+  background-color: white;
+}
+.Todo-item:hover .trash-item {
+  display: block;
+}
