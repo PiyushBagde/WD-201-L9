@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
+
     static dueToday() {
       return this.findAll({
         where: {
@@ -38,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
+
     static overdue() {
       return this.findAll({
         where: {
@@ -48,14 +50,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-    static completedItems() {
-      return this.findAll({
-        where: {
-          completed: true,
-        },
-        order: [["id", "ASC"]],
-      });
-    }
+
     static async remove(id) {
       return this.destroy({
         where: {
@@ -70,16 +65,15 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
+
     markAsCompleted() {
       return this.update({ completed: true });
-    }
-    deletetodo() {
-      return this.removetask(id);
     }
     setCompletionStatus(bool) {
       return this.update({ completed: bool });
     }
   }
+
   Todo.init(
     {
       title: DataTypes.STRING,
