@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 /* eslint-disable no-undef */
 /* eslint-disable comma-dangle */
 /* eslint-disable semi */
@@ -8,8 +9,6 @@ var cheerio = require("cheerio");
 const db = require("../models/index");
 const app = require("../app");
 // eslint-disable-next-line no-unused-vars
-const { parse } = require("json");
-
 let server, agent;
 function extractCsrfToken(res) {
   var $ = cheerio.load(res.text);
