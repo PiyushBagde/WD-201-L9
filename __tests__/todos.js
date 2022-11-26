@@ -10,6 +10,7 @@ const db = require("../models/index");
 const app = require("../app");
 // eslint-disable-next-line no-unused-vars
 let server, agent;
+// eslint-disable-next-line space-before-function-paren
 function extractCsrfToken(res) {
   var $ = cheerio.load(res.text);
   return $("[name=_csrf]").val();
